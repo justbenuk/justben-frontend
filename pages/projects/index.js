@@ -7,6 +7,7 @@ import Link from 'next/link'
 
 export default function ProjectAll( { projects, number } ) {
 
+    console.log(projects)
     let nextpage = 0
     let prevpage = 0
 
