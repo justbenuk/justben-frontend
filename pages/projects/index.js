@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { API_URL } from '@/config'
 import qs from 'qs'
-import Card from '@/components/card/Card'
 import Link from 'next/link'
-import PageLayout from '@/components/layouts/PageLayout'
-import bg from '@/assets/bg.jpg'
-import PageTitle from '@/components/layouts/PageTitle'
+
+//components
+import Layout from '@/components/layouts/Layout'
+import Card from '@/components/card/Card'
+import Current from '@/components/current/Current'
+
 export default function ProjectAll( { projects, number } ) {
 
-    console.log( projects )
+    const allProjects = projects.data
+
+    //handle the pagination logic
     let nextpage = 0
     let prevpage = 0
 
@@ -24,22 +28,22 @@ export default function ProjectAll( { projects, number } ) {
     }
 
     return (
-        <PageLayout title='Projects' description='All projects created by Just Ben UK'>
-            <PageTitle title='My Projects' description='Here are my projects, From themes to complete content management applications. If you have any questions or feedback. Please contact me' />
-            <div className='container mx-auto px-6 lg:px-0 mt-12'>
-                <div className='grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-8'>
-                    { projects.data.map( ( project ) => (
-                        <Card key={ project.id } project={ project.attributes } />
-                    ) ) }
-                </div>
-                { parseInt( projects.meta.pagination.pageCount ) > 1 && (
-                    <div className='flex flex-row justify-between mt-10'>
-                        <Link className='button-link' href={ `/projects?page=${prevpage}` }>Prev Page</Link>
-                        <Link className='button-link' href={ `/projects?page=${nextpage}` }>Next Page</Link>
-                    </div>
-                ) }
+        <Layout title='Projects' description='All projects created by Just Ben UK'>
+            { allProjects.filter( ( item ) => item.attributes.current === true ).map( current => (
+                <Current current={ current } />
+            ) ) }
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+                { projects.data.map( ( project ) => (
+                    <Card key={ project.id } project={ project.attributes } />
+                ) ) }
             </div>
-        </PageLayout>
+            { parseInt( projects.meta.pagination.pageCount ) > 1 && (
+                <div className='flex flex-row justify-between mt-10'>
+                    <Link className='button-link' href={ `/projects?page=${prevpage}` }>Prev Page</Link>
+                    <Link className='button-link' href={ `/projects?page=${nextpage}` }>Next Page</Link>
+                </div>
+            ) }
+        </Layout >
     )
 }
 

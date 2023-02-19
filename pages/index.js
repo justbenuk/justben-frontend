@@ -1,39 +1,17 @@
-import Layout from '@/components/layouts/Layout'
-import { API_URL } from '@/config'
-import qs from 'qs'
+import React from 'react'
+import Link from 'next/link'
 
 //components
-import Hero from '@/components/hero/Hero'
-import About from '@/components/about/About'
-import Current from '@/components/current/Current'
+import Layout from '@/components/layouts/Layout'
 
-
-export default function Home( { current } ) {
+export default function HomePage() {
   return (
-    <Layout>
-      <Hero />
-      <About />
-      <Current current={ current } />
-    </Layout >
+    <Layout title='Ben Andrews' description='Freelance Web Developer based in Tamworth'>
+      <div className='flex flex-col items-center justify-center text-white'>
+        <h1 className='text-6xl'>Hi, I'm Ben Andrews</h1>
+        <p className='lg:w-2/3 text-center text-xl mt-4'>I'm a self-taught Freelance Web Developer and I build Web Applications using Javascript. Take a look at my projects, where I show all of my current projects, code snippets and ideas.</p>
+        <Link href='/projects' className='button'>Projects</Link>
+      </div>
+    </Layout>
   )
 }
-
-export async function getServerSideProps() {
-  const query = qs.stringify( {
-    filters: {
-      current: {
-        $eq: true,
-      }
-    },
-    populate: '*'
-  } )
-
-  const res = await fetch( `${API_URL}/api/projects/?${query}` )
-  const data = await res.json()
-
-  return {
-    props: { current: data.data[ 0 ].attributes }
-  }
-}
-
-

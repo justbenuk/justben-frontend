@@ -5,7 +5,8 @@ const nextConfig = {
     domains: [
       'stingray-app-gukxi.ondigitalocean.app',
       'justben.uk',
-      'www.justben.uk'
+      'www.justben.uk',
+      "res.cloudinary.com",
     ],
   },
 }
