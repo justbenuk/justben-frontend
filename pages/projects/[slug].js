@@ -28,7 +28,7 @@ export default function ProjectSingle( { project } ) {
                         </div>
                         <div className='p-6 text-center'>
                             <div className='p-6 text-white text-xl' dangerouslySetInnerHTML={ { __html: project.content } } />
-                            <div className='p-6 flex flex-col gap-4 items-center justify-center text-black'>
+                            <div className='p-6 flex flex-row gap-4 items-center justify-center text-black'>
                                 { project.github &&
                                     <Link className='px-8 py-2 text-center bg-yellow-300' href={ `${project.github}` } target={ '_blank' } noreferrer ><span></span> Github</Link>
                                 }
