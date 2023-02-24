@@ -39,8 +39,6 @@ export async function getServerSideProps( params ) {
     const connect = new GraphQLClient( API_URL )
 
     const single = JSON.stringify( params.query.slug )
-
-    console.log( params.query.slug )
     //set up the query
     const query = gql`{
             projects(filters: {slug: {eq:${single}}}){
