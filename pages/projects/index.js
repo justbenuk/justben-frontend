@@ -1,67 +1,69 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
+// data
 import { API_URL } from '@/config'
-import qs from 'qs'
-import Link from 'next/link'
+import { gql, GraphQLClient } from 'graphql-request'
 
-//components
-import Layout from '@/components/layouts/Layout'
-import Card from '@/components/card/Card'
-import Current from '@/components/current/Current'
+// components
+import Layout from '@/layout/Layout'
 
-export default function ProjectAll( { projects, number } ) {
+export default function ProjectIndex( { projects } ) {
 
-    const allProjects = projects.data
+  return (
+    <Layout title='My Projects'>
+      <div>
 
-    //handle the pagination logic
-    let nextpage = 0
-    let prevpage = 0
-
-    if ( parseInt( number ) >= parseInt( projects.meta.pagination.pageCount ) ) {
-        nextpage = parseInt( projects.meta.pagination.pageCount )
-    } else {
-        nextpage = parseInt( number ) + 1
-    }
-    if ( parseInt( number ) <= 1 ) {
-        prevpage = 1
-    } else {
-        prevpage = parseInt( number ) - 1
-    }
-
-    return (
-        <Layout title='Projects' description='All projects created by Just Ben UK'>
-            { allProjects.filter( ( item ) => item.attributes.current === true ).map( current => (
-                <Current current={ current } />
-            ) ) }
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-                { projects.data.map( ( project ) => (
-                    <Card key={ project.id } project={ project.attributes } />
-                ) ) }
-            </div>
-            { parseInt( projects.meta.pagination.pageCount ) > 1 && (
-                <div className='flex flex-row justify-between mt-10'>
-                    <Link className='button-link' href={ `/projects?page=${prevpage}` }>Prev Page</Link>
-                    <Link className='button-link' href={ `/projects?page=${nextpage}` }>Next Page</Link>
-                </div>
-            ) }
-        </Layout >
-    )
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8'>
+          { projects.map( ( project, idx ) => (
+            <div key={ idx } project={ project } />
+          ) ) }
+        </div>
+      </div >
+    </Layout >
+  )
 }
 
 export async function getServerSideProps( { query: { page = 1 } } ) {
-    const number = page
-    const query = qs.stringify( {
-        pagination: {
-            page: number,
-            pageSize: 4,
-        },
-        sort: [
-            'createdAt:desc'
-        ],
-        populate: '*'
-    } )
-    const res = await fetch( `${API_URL}/api/projects/?${query}` )
-    const projects = await res.json()
-    return {
-        props: { projects: projects, number: number }
+
+  // set the page number 
+  const number = parseFloat( page )
+
+  console.log( number )
+  //connection
+  const graphqlClient = new GraphQLClient( API_URL )
+
+  //build the query
+  const query = gql`
+  {
+     projects(sort: "createdAt:desc"){
+    data{
+      attributes{
+        title
+        brief
+        slug
+        desktop{
+          data{
+            attributes{
+              url
+            }
+          }
+        }
+        category{
+          data{
+            attributes{
+              slug
+            }
+          }
+        }
+      }
     }
+  }
+  }`
+
+  //dispatch the query
+  const response = await graphqlClient.request( query )
+
+  return {
+    props: { projects: response.projects.data }
+  }
 }

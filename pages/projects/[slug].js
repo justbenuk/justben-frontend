@@ -1,42 +1,32 @@
 import React from 'react'
-import qs from 'qs'
-import { API_URL } from '@/config/index'
-import Layout from '@/components/layouts/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
+
+// data
+import { API_URL } from '@/config/index'
+import { GraphQLClient, gql } from 'graphql-request'
+
+// comonents
+import Layout from '@/layout/Layout'
+
+
 export default function ProjectSingle( { project } ) {
-    console.log( project )
     return (
-        <Layout title={ project.title }>
-            <div className='container mx-auto mt-8 px-6 lg:px-0'>
-                <div className='bg-white/20 rounded-lg shadow-2xl'>
-                    <div className='flex flex-row justify-between items-center px-2 py-2'>
-                        <div className='flex flex-row gap-1'>
-                            <div className='bg-red-500 rounded-full h-[15px] w-[15px]'></div>
-                            <div className='bg-yellow-500 rounded-full h-[15px] w-[15px]'></div>
-                            <div className='bg-green-500 rounded-full h-[15px] w-[15px]'></div>
-                        </div>
-                        <div className='uppercase font-bold text-white'>{ project.title }</div>
+        <Layout blog title={ project.title }>
+            <div className="single-blog">
+                <div className="container">
+                    { project.desktop.data && ( <Image className="blog-feature-img" src={ project.desktop.data.attributes.url } alt='project image' width={ 1000 } height={ 500 } /> ) }
+                    <div >
+                        <img src="static/img/single-blog.jpg" title="" alt="" />
                     </div>
-                    <div className=''>
-                        <div className='p-6 rounded-xl overflow-hidden'>
-                            { project.desktop.data ?
-                                <Image className='w-full h-[300px]' src={ project.desktop.data.attributes.formats.large.url } width={ 400 } height={ 400 } alt='preview' style={ { width: '100%', height: '500px' } } />
-                                :
-                                <div className='flex items-center justify-center h-[40%] w-full text-black'>Sorry! No Preview Available</div>
-                            }
-                        </div>
-                        <div className='p-6 text-center'>
-                            <div className='p-6 text-white text-xl' dangerouslySetInnerHTML={ { __html: project.content } } />
-                            <div className='p-6 flex flex-row gap-4 items-center justify-center text-black'>
-                                { project.github &&
-                                    <Link className='px-8 py-2 text-center bg-yellow-300' href={ `${project.github}` } target={ '_blank' } noreferrer ><span></span> Github</Link>
-                                }
-                                { project.preview &&
-                                    <Link className='px-8 py-2 text-center bg-green-300' href={ `${project.preview}` } target={ '_blank' }><span></span> Visit Site</Link>
-                                }
-                                <Link className='px-8 py-2 text-center bg-red-300' href='/contact'><span></span> Contact Me</Link>
-                            </div>
+                    <div className="row justify-content-center">
+                        <div className="col-lg-8">
+                            <article className="article">
+                                <div className="article-title">
+                                    <h2>{ project.title }</h2>
+                                </div>
+                                <div className='article-content' dangerouslySetInnerHTML={ { __html: project.content } } />
+                            </article>
                         </div>
                     </div>
                 </div>
@@ -44,20 +34,35 @@ export default function ProjectSingle( { project } ) {
         </Layout >
     )
 }
-export async function getServerSideProps( { query } ) {
+export async function getServerSideProps( params ) {
 
-    const q = qs.stringify( {
-        filters: {
-            slug: {
-                $eq: query.slug,
+    const connect = new GraphQLClient( API_URL )
+
+    const single = JSON.stringify( params.query.slug )
+
+    console.log( params.query.slug )
+    //set up the query
+    const query = gql`{
+            projects(filters: {slug: {eq:${single}}}){
+                data{
+                    attributes{
+                        title
+                        brief
+                        content
+                        desktop{
+                            data{
+                                attributes{
+                                    url
+                                }
+                            }
+                        }
+                    }
+                }
             }
-        },
-        populate: '*',
-    } )
+    }`
+    const response = await connect.request( query )
 
-    const res = await fetch( `${API_URL}/api/projects/?${q}` )
-    const project = await res.json()
     return {
-        props: { project: project.data[ 0 ].attributes }
+        props: { project: response.projects.data[ 0 ].attributes }
     }
 }
