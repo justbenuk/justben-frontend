@@ -13,7 +13,7 @@ export default function PortfolioList( { blog } ) {
       <div className="blog-info">
         <div className="meta">{ blog.attributes.createdAt }</div>
         <h6>
-          <Link href={ `/blog/${blog.attributes.slug}` }>
+          <Link href={ `/projects/${blog.attributes.slug}` }>
 
             { blog.attributes.title }
 
