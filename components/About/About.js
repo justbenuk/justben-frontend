@@ -11,9 +11,8 @@ const About = () => {
         <div className="row align-items-center justify-content-center">
           <div className="col-lg-6 m-15px-tb">
             <div className="about-me">
-              <div className="img">
-                <Image className="img-in" src={ aboutImage.src } alt="about me image" width={ 600 } height={ 500 } />
-
+              <div className="img overflow-hidden">
+                <Image className="img-in rounded-full overflow-hidden" src={ aboutImage.src } alt="about me image" width={ 600 } height={ 350 } />
               </div>
             </div>
           </div>
@@ -33,7 +32,7 @@ const About = () => {
                   <a className="px-btn px-btn-theme" href="#contactus">
                     <span>Contact Me</span>
                   </a>
-                  <a className="px-btn px-btn-theme" href="/project">
+                  <a className="px-btn px-btn-theme" href="#work">
                     <span>Projects</span>
                   </a>
                 </div>

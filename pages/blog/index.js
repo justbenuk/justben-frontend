@@ -1,15 +1,14 @@
 import React from 'react'
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { getPagination, pagination } from "@/config/utils";
 
 // componants
 import Layout from '@/layout/Layout';
-import BlogItem from '@/components/BlogItem';
+import BlogItem from '@/components/Blog/BlogItem';
 
 //data
 import { API_URL } from '@/config';
 import { gql, GraphQLClient } from 'graphql-request'
+
 
 export default function index( { blogs, number } ) {
 

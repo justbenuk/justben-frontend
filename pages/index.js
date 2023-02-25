@@ -1,11 +1,12 @@
 import dynamic from "next/dynamic";
 import Link from 'next/link';
+import Image from 'next/image';
 // components
-import About from "@/components/About";
-import Blog from "@/components/Blog";
-import Contact from "@/components/Contact";
-import Services from "@/components/Services";
-import TypingAnimation from "@/components/TypingAnimation";
+import About from "@/components/About/About";
+import Blog from "@/components/Blog/Blog";
+import Contact from "@/components/Contact/Contact";
+import Services from '@/components/Service/Services';
+import TypingAnimation from "@/components/Utilis/TypingAnimation";
 import Layout from "@/layout/Layout";
 
 // assets
@@ -15,7 +16,7 @@ import me from '@/assets/newme.png'
 import { API_URL } from '@/config';
 import { gql, GraphQLClient } from 'graphql-request'
 
-const Portfolio = dynamic( () => import( "@/components/Portfolio" ), {
+const Portfolio = dynamic( () => import( "@/components/Portfolio/Portfolio" ), {
   ssr: false,
 } );
 const Index = ( { projects, blogs } ) => {
@@ -48,10 +49,7 @@ const Index = ( { projects, blogs } ) => {
                 </div>
               </div>
               <div className="col-lg-6">
-
-                <div >
-                  <img src={ me.src } title="" alt="" />
-                </div>
+                <Image src={ me.src } alt="Profile Pic" width={ 500 } height={ 500 } />
               </div>
             </div>
           </div>

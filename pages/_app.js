@@ -1,6 +1,9 @@
-import Head from "next/head";
 import { Fragment, useEffect, useState } from "react";
+
+// utils
 import PreLoader from "@/layout/PreLoader";
+
+// assets
 import "../styles/glitch.css";
 import "../styles/globals.css";
 function MyApp( { Component, pageProps } ) {

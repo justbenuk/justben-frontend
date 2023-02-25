@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Image from 'next/image'
 
 // data
@@ -10,11 +10,18 @@ import Layout from '@/layout/Layout'
 
 export default function BlogSingle( { blog } ) {
 
+  // structure the data or display default text
+  const data = {
+    title: blog.title || 'Title Not Found',
+    content: blog.content || 'Content Not Found',
+    image: blog.image.data.attributes.url || 'Image Not Found'
+  }
+
   return (
-    <Layout blog title={ blog.title }>
+    <Layout blog title={ data.title }>
       <div className="single-blog">
         <div className="container">
-          { blog.image.data && ( <Image className="blog-feature-img" src={ blog.image.data.attributes.url } alt='project image' width={ 1000 } height={ 500 } /> ) }
+          { blog.image.data && ( <Image className="blog-feature-img" src={ data.image } alt='project image' width={ 1000 } height={ 500 } /> ) }
           <div >
             <img src="static/img/single-blog.jpg" title="" alt="" />
           </div>
@@ -22,9 +29,9 @@ export default function BlogSingle( { blog } ) {
             <div className="col-lg-8">
               <article className="article">
                 <div className="article-title">
-                  <h2>{ blog.title }</h2>
+                  <h2>{ data.title }</h2>
                 </div>
-                <div className='article-content' dangerouslySetInnerHTML={ { __html: blog.content } } />
+                <div className='article-content' dangerouslySetInnerHTML={ { __html: data.content } } />
               </article>
             </div>
           </div>

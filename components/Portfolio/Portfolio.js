@@ -1,5 +1,6 @@
 import Isotope from "isotope-layout";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import Link from 'next/link';
 
 // components
 import PortfolioItem from './PortfolioItem';
@@ -39,6 +40,11 @@ const Portfolio = ( { projects } ) => {
           { projects.map( ( item ) => (
             <PortfolioItem project={ item.attributes } key={ item.id } />
           ) ) }
+        </div>
+        <div className="col-12 read-more-blog text-center">
+          <Link href="/projects" className="px-btn px-btn-theme">
+            More Projects
+          </Link>
         </div>
       </div>
     </section>

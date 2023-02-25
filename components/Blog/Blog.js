@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-
 //components
 import BlogItem from './BlogItem';
+
 const Blog = ( { blogs } ) => {
   return (
     <section

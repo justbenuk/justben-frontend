@@ -7,7 +7,7 @@ import SwiperCore, {
   Pagination,
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-SwiperCore.use([Pagination, Navigation, EffectFade, Autoplay, Grid]);
+SwiperCore.use( [ Pagination, Navigation, EffectFade, Autoplay, Grid ] );
 const Testimonials = () => {
   const props = {
     slidesPerView: 1,
@@ -31,7 +31,7 @@ const Testimonials = () => {
       <div className="title">
         <h3>Testimonials.</h3>
       </div>
-      <Swiper {...props}>
+      <Swiper { ...props }>
         <SwiperSlide className="testimonial-01 media">
           <div className="avatar">
             <img src="static/img/team-1.jpg" title="" alt="" />
@@ -39,7 +39,7 @@ const Testimonials = () => {
           <div className="media-body">
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the {`industry's`} standard dummy
+              industry. Lorem Ipsum has been the { `industry's` } standard dummy
               text ever since the 1500s.
             </p>
             <h6>Jennifer Lutheran</h6>
@@ -53,7 +53,7 @@ const Testimonials = () => {
           <div className="media-body">
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the {`industry's`} standard dummy
+              industry. Lorem Ipsum has been the { `industry's` } standard dummy
               text ever since the 1500s.
             </p>
             <h6>Jennifer Lutheran</h6>
@@ -67,7 +67,7 @@ const Testimonials = () => {
           <div className="media-body">
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the {`industry's`} standard dummy
+              industry. Lorem Ipsum has been the { `industry's` } standard dummy
               text ever since the 1500s.
             </p>
             <h6>Jennifer Lutheran</h6>
@@ -81,7 +81,7 @@ const Testimonials = () => {
           <div className="media-body">
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the {`industry's`} standard dummy
+              industry. Lorem Ipsum has been the { `industry's` } standard dummy
               text ever since the 1500s.
             </p>
             <h6>Jennifer Lutheran</h6>

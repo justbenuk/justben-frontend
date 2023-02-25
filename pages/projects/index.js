@@ -1,41 +1,82 @@
-import React, { useState, useEffect } from 'react'
-
+import React from 'react'
+import Link from "next/link";
 // data
 import { API_URL } from '@/config'
 import { gql, GraphQLClient } from 'graphql-request'
 
 // components
 import Layout from '@/layout/Layout'
+import PortfolioList from '@/components/Portfolio/PortfolioList';
 
-export default function ProjectIndex( { projects } ) {
+export default function ProjectIndex( { projects, number } ) {
 
+  //handle the pagination logic
+  let nextpage = 0
+  let prevpage = 0
+
+  if ( parseInt( number ) >= parseInt( projects.meta.pagination.pageCount ) ) {
+    nextpage = parseInt( projects.meta.pagination.pageCount )
+  } else {
+    nextpage = parseInt( number ) + 1
+  }
+  if ( parseInt( number ) <= 1 ) {
+    prevpage = 1
+  } else {
+    prevpage = parseInt( number ) - 1
+  }
   return (
-    <Layout title='My Projects'>
-      <div>
-
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8'>
-          { projects.map( ( project, idx ) => (
-            <div key={ idx } project={ project } />
-          ) ) }
+    <Layout blog title='My Projects'>
+      <div className="blog-listing" id="projects">
+        <div className="container">
+          <div className="title text-center">
+            <h3>My projects</h3>
+          </div>
+          <div className="row">
+            { projects.data.map( ( item ) => (
+              <div className="col-md-6 m-15px-tb">
+                <PortfolioList blog={ item } key={ item.id } />
+              </div>
+            ) ) }
+            <div className="col-12 blog-pagination">
+              { parseInt( projects.meta.pagination.pageCount ) > 1 && (
+                <ul className="pagination justify-content-center">
+                  <li className={ `page-item ${projects.meta.pagination.page == 1 ? "disabled" : ""}` }>
+                    <Link
+                      className="page-link"
+                      href={ `/projects?page=${prevpage}` }
+                    >
+                      <i className="fas fa-chevron-left" />
+                    </Link>
+                  </li>
+                  <li className='page-item' style={ { padding: '0px 10px' } }>
+                    Total Pages: { projects.meta.pagination.total }
+                  </li>
+                  <li className={ `page-item ${projects.meta.pagination.page == 2 ? "disabled" : ""}` }>
+                    <Link
+                      className="page-link"
+                      href={ `/projects?page=${nextpage}` }
+                    >
+                      <i className="fas fa-chevron-right" />
+                    </Link>
+                  </li>
+                </ul>
+              ) }
+            </div>
+          </div>
         </div>
-      </div >
+      </div>
     </Layout >
   )
 }
 
 export async function getServerSideProps( { query: { page = 1 } } ) {
+  const number = page
 
-  // set the page number 
-  const number = parseFloat( page )
+  const graphQLClient = new GraphQLClient( API_URL )
 
-  console.log( number )
-  //connection
-  const graphqlClient = new GraphQLClient( API_URL )
-
-  //build the query
   const query = gql`
   {
-     projects(sort: "createdAt:desc"){
+    projects(sort: "createdAt:desc", pagination: {page: ${page}, pageSize:4}){
     data{
       attributes{
         title
@@ -57,13 +98,21 @@ export async function getServerSideProps( { query: { page = 1 } } ) {
         }
       }
     }
+    meta{
+    pagination{
+      page
+      pageSize
+      pageCount
+      total
+    }
   }
+  }
+  
   }`
 
-  //dispatch the query
-  const response = await graphqlClient.request( query )
+  const response = await graphQLClient.request( query )
 
   return {
-    props: { projects: response.projects.data }
+    props: { projects: response.projects, number: number }
   }
 }

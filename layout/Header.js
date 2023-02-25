@@ -3,10 +3,10 @@ import Image from 'next/image';
 import { Fragment, useEffect, useState } from "react";
 import { activeSection } from "@/config/utils";
 import me from '@/assets/newme.png'
-const Header = ( { blog } ) => {
+const Header = ( { blog, projects } ) => {
   const [ sideBarToggle, setSideBarToggle ] = useState( false );
   useEffect( () => {
-    if ( !blog ) {
+    if ( !blog || !projects ) {
       activeSection();
     }
   }, [] );
@@ -91,7 +91,7 @@ const MenuWithOutBlog = () => {
       <li data-menuanchor="work">
         <a className="nav-link" href="#work">
           <i className="ti-bookmark-alt" />
-          <span>Portfolio</span>
+          <span>Projects</span>
         </a>
       </li>
       <li data-menuanchor="blog" className="blog">
@@ -170,3 +170,5 @@ const MenuWithBlog = () => {
     </Fragment>
   );
 };
+
+
