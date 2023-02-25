@@ -83,6 +83,7 @@ export async function getServerSideProps( { query: { page = 1 } } ) {
     data{
       attributes{
         title
+        slug
         createdAt
         content
         image{
