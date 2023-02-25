@@ -6,7 +6,7 @@ export default function BlogItem( { blog } ) {
 
     <div className="blog-grid" >
       <div className="blog-img">
-        <Link href={ `${blog.attributes.slug}` }>
+        <Link href={ `/blog/${blog.attributes.slug}` }>
           { blog.attributes.image.data && ( <Image src={ blog.attributes.image.data.attributes.url } width={ 1000 } height={ 300 } /> ) }
         </Link>
       </div>
