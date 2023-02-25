@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 // data
 import { API_URL } from '@/config/index'
@@ -15,9 +16,6 @@ export default function ProjectSingle( { project } ) {
             <div className="single-blog">
                 <div className="container">
                     { project.desktop.data && ( <Image className="blog-feature-img" src={ project.desktop.data.attributes.url } alt='project image' width={ 1000 } height={ 500 } /> ) }
-                    <div >
-                        <img src="static/img/single-blog.jpg" title="" alt="" />
-                    </div>
                     <div className="row justify-content-center">
                         <div className="col-lg-8">
                             <article className="article">
@@ -27,7 +25,21 @@ export default function ProjectSingle( { project } ) {
                                 <div className='article-content' dangerouslySetInnerHTML={ { __html: project.content } } />
                             </article>
                         </div>
+
                     </div>
+
+                </div>
+                <div style={ { display: 'flex', flexDirection: 'row', gap: 10, alignContent: 'center', justifyContent: 'center', margin: '40px 0px' } }>
+                    { project.github && (
+                        <Link className="px-btn px-btn-theme" href={ project.github } target="_blank">
+                            <span>Github</span>
+                        </Link>
+                    ) }
+                    { project.preview && (
+                        <Link className="px-btn px-btn-theme" href={ project.preview } target="_blank">
+                            <span>Live</span>
+                        </Link>
+                    ) }
                 </div>
             </div>
         </Layout >
@@ -46,6 +58,8 @@ export async function getServerSideProps( params ) {
                         title
                         brief
                         content
+                        github
+                        preview
                         desktop{
                             data{
                                 attributes{

@@ -4,8 +4,6 @@ import Link from 'next/link'
 export default function PortfolioList( { blog } ) {
 
   return (
-
-
     <div className="blog-grid" >
       <div className="blog-img">
         <Link href={ `/blog/${blog.attributes.slug}` }>

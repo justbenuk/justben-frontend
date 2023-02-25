@@ -78,6 +78,7 @@ export async function getServerSideProps( { query: { page = 1 } } ) {
   {
     projects(sort: "createdAt:desc", pagination: {page: ${page}, pageSize:4}){
     data{
+      id
       attributes{
         title
         brief

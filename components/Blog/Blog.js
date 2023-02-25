@@ -16,7 +16,7 @@ const Blog = ( { blogs } ) => {
         </div>
         <div className="row">
           { blogs.map( ( item ) => (
-            <div className="col-md-6 m-15px-tb">
+            <div className="col-md-6 m-15px-tb" >
               <BlogItem blog={ item } key={ item.id } />
             </div>
           ) ) }

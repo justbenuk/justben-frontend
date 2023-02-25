@@ -2,10 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 export default function BlogItem( { blog } ) {
-
   return (
-
-
     <div className="blog-grid" >
       <div className="blog-img">
         <Link href={ `/blog/${blog.attributes.slug}` }>

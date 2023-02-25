@@ -82,6 +82,7 @@ export async function getServerSideProps() {
   {
       projects(sort: "createdAt:desc", pagination: {pageSize: 12}){
     data{
+      id
       attributes{
         title
         brief
